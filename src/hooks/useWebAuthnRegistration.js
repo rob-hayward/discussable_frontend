@@ -64,6 +64,12 @@ const useWebAuthnRegistration = () => {
       // Send registration response to server
       const registrationResponse = await axiosInstance.post('/webauthn/register/response/', registrationData);
 
+       // Assuming your backend returns a token upon successful registration
+      if (registrationResponse.data.token) {
+        localStorage.setItem('token', registrationResponse.data.token); // Save the token
+        // Optionally navigate the user to another page or set user context state here
+      }
+
       // Check for error response from server
       if (registrationResponse.status !== 200) {
         throw new Error(registrationResponse.data.detail || "Registration failed.");

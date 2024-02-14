@@ -7,6 +7,9 @@ import LoginPage from './components/AuthenTech/LoginPage';
 import RegistrationPage from './components/AuthenTech/RegistrationPage';
 import DashboardPage from './components/AuthenTech/DashboardPage';
 import EmailVerification from './components/AuthenTech/EmailVerification';
+import CreateDiscussionPage from './components/Discussable/CreateDiscussionPage';
+import DiscussionsListPage from './components/Discussable/DiscussionsListPage';
+import DiscussionDetailPage from './components/Discussable/DiscussionDetailPage';
 import { UserProvider } from './contexts/UserContext';
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
               <Route path="/register" element={<RegistrationPage/>}/>
               <Route path="/dashboard" element={<DashboardPage/>}/>
               <Route path="/verify-email/:token" element={<EmailVerification/>}/>
+              <Route path="/create-discussion" element={<CreateDiscussionPage/>}/>
+              <Route path="/discussions" element={<DiscussionsListPage/>}/>
+              <Route path="/discussions/:discussionId" element={<DiscussionDetailPage />} />
           </Routes>
       </Router>
     </UserProvider>

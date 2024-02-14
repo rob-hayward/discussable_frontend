@@ -1,0 +1,72 @@
+/* src/components/Discussable/DiscussionDetailPage.css */
+
+.discussion-detail-container {
+  padding: 20px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  background-color: #000;
+  color: #E0E0E0;
+  max-width: 700px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.discussion-detail-heading, .comments-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.comment, .new-comment-form {
+  background-color: #222;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+  color: #E0E0E0;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.new-comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #E0E0E0;
+  background-color: #222;
+  color: #E0E0E0;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #E0E0E0;
+  border: 2px solid #E0E0E0;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #E0E0E0;
+  color: #000;
+  border-color: transparent;
+}
+
+.error-message {
+  color: #FF6347; /* Tomato for error messages */
+}
+
+@media (max-width: 768px) {
+  .discussion-detail-container {
+    width: 90%;
+  }
+}
+
+.hidden-content {
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}

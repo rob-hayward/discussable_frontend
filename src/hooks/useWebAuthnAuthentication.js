@@ -32,6 +32,13 @@ const useWebAuthnAuthentication = () => {
       console.log("Sending authentication response to the server:", authenticationResponse);
 
       const response = await axiosInstance.post('/webauthn/login/response/', authenticationResponse);
+
+       // Assuming your backend returns a token upon successful authentication
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token); // Save the token for future requests
+        // Optionally navigate the user to another page or set user context state here
+      }
+
       return response.data;  // Returning the response from the server
     } catch (e) {
       console.error("Authentication error:", e);

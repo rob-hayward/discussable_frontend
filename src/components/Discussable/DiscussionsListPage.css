@@ -1,0 +1,76 @@
+/* src/components/Discussable/DiscussionsListPage.css */
+
+.discussions-list-container {
+  padding: 20px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  background-color: #000;
+  color: #E0E0E0;
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.discussion {
+  background-color: #222;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.discussion h3 {
+  color: #E0E0E0;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.discussion h3:hover {
+  color: #FFF; /* Lighter color on hover for visibility */
+}
+
+.discussion p {
+  margin: 5px 0;
+}
+
+.link {
+  text-decoration: none;
+  color: #E0E0E0;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #FFF; /* Lighter color on hover for visibility */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #E0E0E0;
+  border: 2px solid #E0E0E0;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #E0E0E0;
+  color: #000;
+  border-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .discussions-list-container {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+.hidden-content {
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
