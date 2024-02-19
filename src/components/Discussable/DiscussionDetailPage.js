@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
+import PieChart from '../Visualization/PieChart';
 import './DiscussionDetailPage.css';
 
 const DiscussionDetailPage = () => {
@@ -75,12 +76,14 @@ const DiscussionDetailPage = () => {
             <h2>Discussion Detail Page</h2>
             {discussion && (
                 <div>
-                    <p>ID: {discussion.id}</p>
-                    <p>Subject: {discussion.subject}</p>
+                    {/*<p>ID: {discussion.id}</p>*/}
                     <p>Category: {discussion.category}</p>
-                    <p>Total Votes: {discussion.total_votes}</p>
-                    <p>Positive Votes: {discussion.positive_votes}</p>
-                    <p>Negative Votes: {discussion.negative_votes}</p>
+                    <p>Subject: {discussion.subject}</p>
+                    <p>By: {discussion.creator_name}</p>
+                    {/*<p>Total Votes: {discussion.total_votes}</p>*/}
+                    {/*<p>Positive Votes: {discussion.positive_votes}</p>*/}
+                    {/*<p>Negative Votes: {discussion.negative_votes}</p>*/}
+                    <PieChart word={discussion}/>
                     <div>
                         <button onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
                         <button onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
@@ -102,14 +105,18 @@ const DiscussionDetailPage = () => {
                                 </div>
                             ) : (
                                 <>
-                                    <p>Comment ID: {comment.id}</p>
+                                    {/*<p>Comment ID: {comment.id}</p>*/}
+                                    <p>By: {comment.creator_name}</p>
                                     <p>Content: {comment.comment_content}</p>
-                                    <p>Positive Votes: {comment.positive_votes}</p>
-                                    <p>Negative Votes: {comment.negative_votes}</p>
+                                    {/*<p>Positive Votes: {comment.positive_votes}</p>*/}
+                                    {/*<p>Negative Votes: {comment.negative_votes}</p>*/}
+                                    <PieChart word={comment}/>
                                     <div>
                                         <button onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
                                         <button onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
-                                        <button onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide</button>
+                                        <button
+                                            onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide
+                                        </button>
                                     </div>
                                 </>
                             )}
@@ -136,58 +143,3 @@ const DiscussionDetailPage = () => {
 export default DiscussionDetailPage;
 
 
-
-
-
-//
-// import React, { useEffect, useState } from 'react';
-// import axiosInstance from '../../api/axiosConfig';
-// import PieChart from '../Visualization/PieChart';
-// import { useParams } from 'react-router-dom';
-//
-// const DiscussionDetailPage = () => {
-//     const { discussionId } = useParams();
-//     const [discussion, setDiscussion] = useState(null);
-//     const [comments, setComments] = useState([]);
-//     const [errorMessage, setErrorMessage] = useState('');
-//
-//     useEffect(() => {
-//         const fetchDiscussion = async () => {
-//             try {
-//                 const response = await axiosInstance.get(`/discussions/${discussionId}`);
-//                 setDiscussion(response.data.discussion);
-//                 setComments(response.data.comments);
-//             } catch (error) {
-//                 console.error("Error fetching discussion details:", error);
-//                 setErrorMessage('Error fetching discussion details.');
-//             }
-//         };
-//
-//         fetchDiscussion();
-//     }, [discussionId]);
-//
-//     return (
-//         <div className="discussion-detail-container">
-//             {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-//             {discussion && (
-//                 <>
-//                     <h2>{discussion.subject}</h2>
-//                     <p>Category: {discussion.category}</p>
-//                     <p>Created by: {discussion.creator.preferredName}</p>
-//                     <PieChart votable={discussion} />
-//                     {/* Voting and hide/show buttons */}
-//                     {/* Discussion initial comment */}
-//                     {comments.map((comment, index) => (
-//                         <div key={comment.id} className="comment">
-//                             <p>{comment.creator.preferredName}: {comment.text}</p>
-//                             <PieChart votable={comment} />
-//                             {/* Voting and hide/show buttons for each comment */}
-//                         </div>
-//                     ))}
-//                 </>
-//             )}
-//         </div>
-//     );
-// };
-//
-// export default DiscussionDetailPage;

@@ -1,5 +1,4 @@
 /* src/components/Discussable/DiscussionsListPage.css */
-
 .discussions-list-container {
   padding: 20px;
   border: 2px solid #E0E0E0;
@@ -11,6 +10,9 @@
 }
 
 .discussion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #222;
   border: 1px solid #E0E0E0;
   border-radius: 5px;
@@ -18,28 +20,31 @@
   padding: 10px;
 }
 
-.discussion h3 {
+.word-piechart {
+  width: 100px; /* Adjust based on desired size */
+  height: 100px; /* Adjust based on desired size */
+  flex-shrink: 0; /* Prevents the chart from shrinking */
+}
+
+.word-piechart svg {
+  width: 100%;
+  height: auto;
+}
+
+.discussion h3,
+.link {
   color: #E0E0E0;
   cursor: pointer;
   transition: color 0.3s;
 }
 
-.discussion h3:hover {
+.discussion h3:hover,
+.link:hover {
   color: #FFF; /* Lighter color on hover for visibility */
 }
 
 .discussion p {
   margin: 5px 0;
-}
-
-.link {
-  text-decoration: none;
-  color: #E0E0E0;
-  transition: color 0.3s;
-}
-
-.link:hover {
-  color: #FFF; /* Lighter color on hover for visibility */
 }
 
 button {
@@ -60,17 +65,27 @@ button:hover {
   border-color: transparent;
 }
 
-@media (max-width: 768px) {
-  .discussions-list-container {
-    width: 90%;
-    margin: 20px auto;
-  }
-}
-
 .hidden-content {
   color: #999;
   background-color: #f0f0f0;
   padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .discussion {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .word-piechart {
+    align-self: center; /* Center the pie chart on smaller screens */
+    margin-top: 10px; /* Adds some space above the pie chart on smaller screens */
+  }
+
+  .discussions-list-container {
+    width: 90%;
+    margin: 20px auto;
+  }
 }

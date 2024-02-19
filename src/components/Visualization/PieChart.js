@@ -1,3 +1,4 @@
+// src/components/Visualization/PieChart.js
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
@@ -15,8 +16,8 @@ const PieChart = ({ word }) => {
             data = [{ name: 'No Vote', value: 1 }];
         } else {
             data = [
-                { name: 'Approve votes', value: positiveVotes, percentage: positivePercentage },
-                { name: 'Reject votes', value: negativeVotes, percentage: negativePercentage }
+                { name: 'Positive votes', value: positiveVotes, percentage: positivePercentage },
+                { name: 'Negative votes', value: negativeVotes, percentage: negativePercentage }
             ];
         }
 
