@@ -6,7 +6,7 @@ import './DiscussionsListPage.css';
 const DiscussionsListPage = () => {
     const [discussions, setDiscussions] = useState([]);
 
-    // Define fetchDiscussions to be used inside useEffect and showDiscussion
+    // Fetch discussions
     const fetchDiscussions = () => {
         axiosInstance.get('/discussions/')
             .then(response => {
@@ -21,40 +21,45 @@ const DiscussionsListPage = () => {
         fetchDiscussions();
     }, []);
 
-    const showDiscussion = async (discussionId) => {
-        // Logic to show discussion if needed, for now, simply re-fetch discussions
-        fetchDiscussions();
+    // Function to update the visibility preference of a discussion
+    const updateVisibilityPreference = async (discussionId, preference) => {
+        try {
+            await axiosInstance.post(`/preferences/discussion/${discussionId}/${preference}/`);
+            fetchDiscussions();  // Re-fetch to reflect the updated preferences
+        } catch (error) {
+            console.error(`Error updating visibility preference:`, error);
+        }
     };
 
     return (
         <div className="discussions-list-container">
             <h2>Existing Discussions</h2>
-            {discussions.map((discussion) => (
-                <div key={discussion.id} className="discussion">
-                    {discussion.visibility_status === 'visible' ? (
-                        <>
-                            <Link to={`/discussions/${discussion.id}`}>
-                                <h3>{discussion.subject}</h3>
-                            </Link>
-                            <p>Category: {discussion.category}</p>
-                            <p>Initial Comment: {discussion.comments && discussion.comments.length > 0 ? discussion.comments[0].comment_content : "No initial comment"}</p>
-                            <p>Total Votes: {discussion.total_votes}</p>
-                            <p>Positive Votes: {discussion.positive_votes}</p>
-                            <p>Negative Votes: {discussion.negative_votes}</p>
-                            {discussion.comments && discussion.comments.length > 0 && (
-                                <>
-                                    <p>Initial Comment Positive Votes: {discussion.comments[0].positive_votes}</p>
-                                    <p>Initial Comment Negative Votes: {discussion.comments[0].negative_votes}</p>
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <div className="hidden-content">
-                            This discussion is hidden. <button onClick={() => showDiscussion(discussion.id)}>Show</button>
-                        </div>
-                    )}
-                </div>
-            ))}
+            {discussions.map((discussion) => {
+                const isHiddenByUser = discussion.user_preference === 'hide';
+                const isHiddenByCommunity = discussion.visibility_status === 'hidden' && discussion.user_preference !== 'show';
+
+                return (
+                    <div key={discussion.id} className={`discussion ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
+                        {(isHiddenByCommunity || isHiddenByUser) ? (
+                            <div className="hidden-content">
+                                This discussion is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
+                                <button onClick={() => updateVisibilityPreference(discussion.id, 'show')}>Show</button>
+                            </div>
+                        ) : (
+                            <>
+                                <Link to={`/discussions/${discussion.id}`}>
+                                    <h3>{discussion.subject}</h3>
+                                </Link>
+                                <p>Category: {discussion.category}</p>
+                                <p>Total Votes: {discussion.total_votes}</p>
+                                <p>Positive Votes: {discussion.positive_votes}</p>
+                                <p>Negative Votes: {discussion.negative_votes}</p>
+                                <button onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide</button>
+                            </>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 };
