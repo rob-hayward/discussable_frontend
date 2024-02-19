@@ -1,3 +1,4 @@
+//src/components/Discussable/DiscussionDetailPage.js
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
@@ -10,7 +11,6 @@ const DiscussionDetailPage = () => {
     const [newCommentContent, setNewCommentContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    // Wrap fetchDiscussion in useCallback
     const fetchDiscussion = useCallback(async () => {
         try {
             const response = await axiosInstance.get(`/discussions/${discussionId}/`);
@@ -20,11 +20,20 @@ const DiscussionDetailPage = () => {
             console.error("Error fetching discussion details:", error);
             setErrorMessage('Error fetching discussion details.');
         }
-    }, [discussionId]); // dependency array for useCallback
+    }, [discussionId]);
 
     useEffect(() => {
         fetchDiscussion();
-    }, [fetchDiscussion]); // Now fetchDiscussion is stable and won't change on every render
+    }, [fetchDiscussion]);
+
+    const updateVisibilityPreference = async (votableType, votableId, preference) => {
+        try {
+            await axiosInstance.post(`/preferences/${votableType}/${votableId}/${preference}/`);
+            fetchDiscussion();  // Re-fetch to reflect the updated preferences
+        } catch (error) {
+            console.error(`Error updating visibility preference:`, error);
+        }
+    };
 
     const handleNewCommentChange = (e) => {
         setNewCommentContent(e.target.value);
@@ -42,6 +51,7 @@ const DiscussionDetailPage = () => {
             });
             setComments([...comments, response.data]);
             setNewCommentContent('');
+            fetchDiscussion(); // Refresh comments to reflect user preferences
         } catch (error) {
             console.error("Error submitting comment:", error.response.data);
             setErrorMessage('Failed to submit comment. Please try again.');
@@ -60,50 +70,55 @@ const DiscussionDetailPage = () => {
         }
     };
 
-    const showComment = async (commentId) => {
-      // Placeholder for potential implementation
-      // For now, just re-fetch the discussion details to refresh the comments
-      fetchDiscussion();
-    };
-
     return (
         <div className="discussion-detail-container">
             <h2>Discussion Detail Page</h2>
-            <div>
-                <p>ID: {discussion?.id}</p>
-                <p>Subject: {discussion?.subject}</p>
-                <p>Category: {discussion?.category}</p>
-                <p>Total Votes: {discussion?.total_votes}</p>
-                <p>Positive Votes: {discussion?.positive_votes}</p>
-                <p>Negative Votes: {discussion?.negative_votes}</p>
+            {discussion && (
                 <div>
-                    <button onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
-                    <button onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
+                    <p>ID: {discussion.id}</p>
+                    <p>Subject: {discussion.subject}</p>
+                    <p>Category: {discussion.category}</p>
+                    <p>Total Votes: {discussion.total_votes}</p>
+                    <p>Positive Votes: {discussion.positive_votes}</p>
+                    <p>Negative Votes: {discussion.negative_votes}</p>
+                    <div>
+                        <button onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
+                        <button onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
+                    </div>
                 </div>
-            </div>
+            )}
             <h3>Comments</h3>
             {comments.length > 0 ? (
-  comments.map((comment) => (
-    <div key={comment.id} className="comment">
-      {comment.visibility_status === 'visible' ? (
-        <>
-          <p>Comment ID: {comment.id}</p>
-          <p>Content: {comment.comment_content}</p>
-          <p>Positive Votes: {comment.positive_votes}</p>
-          <p>Negative Votes: {comment.negative_votes}</p>
-          <div>
-            <button onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
-            <button onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
-          </div>
-        </>
-      ) : (
-        <div className="hidden-content">This comment is hidden. <button onClick={() => showComment(comment.id)}>Show</button></div>
-      )}
-    </div>
-  ))
-) : (
-  <p>No comments yet.</p>
-)}
+                comments.map((comment) => {
+                    const isHiddenByUser = comment.user_preference === 'hide';
+                    const isHiddenByCommunity = comment.visibility_status === 'hidden' && comment.user_preference !== 'show';
+
+                    return (
+                        <div key={comment.id} className={`comment ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
+                            {(isHiddenByCommunity || isHiddenByUser) ? (
+                                <div className="hidden-content">
+                                    This comment is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
+                                    <button onClick={() => updateVisibilityPreference('comment', comment.id, 'show')}>Show</button>
+                                </div>
+                            ) : (
+                                <>
+                                    <p>Comment ID: {comment.id}</p>
+                                    <p>Content: {comment.comment_content}</p>
+                                    <p>Positive Votes: {comment.positive_votes}</p>
+                                    <p>Negative Votes: {comment.negative_votes}</p>
+                                    <div>
+                                        <button onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
+                                        <button onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
+                                        <button onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide</button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    );
+                })
+            ) : (
+                <p>No comments yet.</p>
+            )}
             <form onSubmit={handleCommentSubmit} className="new-comment-form">
                 <textarea
                     value={newCommentContent}
@@ -119,6 +134,7 @@ const DiscussionDetailPage = () => {
 };
 
 export default DiscussionDetailPage;
+
 
 
 

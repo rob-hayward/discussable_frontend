@@ -1,3 +1,4 @@
+// src/components/Discussable/DiscussionsListPage.js
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
 import { Link } from 'react-router-dom';
