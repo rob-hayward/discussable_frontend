@@ -19,7 +19,7 @@ const LoginPage = () => {
 
   return (
     <div className="loginContainer">
-      <img src={`${process.env.PUBLIC_URL}/AuthenTechLogo.png`} alt="AuthenTech Logo" className="logoSmall"/>
+      <img src={`${process.env.PUBLIC_URL}../assets/speech_bubble.png`} alt="Discussable Logo" className="logoSmall"/>
       <form onSubmit={handleSubmit} className="loginForm">
         <input
           type="text"

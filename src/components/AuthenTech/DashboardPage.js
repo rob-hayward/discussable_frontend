@@ -30,7 +30,7 @@ const DashboardPage = () => {
 
   return (
     <div className="dashboard-container">
-      <img src={`${process.env.PUBLIC_URL}/AuthenTechLogo.png`} alt="AuthenTech Logo" className="logo"/>
+      <img src={`${process.env.PUBLIC_URL}/speech_bubble.png`} alt="Discussable Logo" className="logo"/>
       <h1 className="dashboard-heading">Discussable Dashboard</h1>
       {userProfile && <p>Welcome, {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
       <div className="dashboard-options">
