@@ -2,24 +2,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWebAuthnAuthentication from '../../hooks/useWebAuthnAuthentication';
+import { useAuth } from '../../contexts/AuthContext'; // Ensure the path is correct
 import './LoginPage.css';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
+  // Removed the onSuccessLogin parameter since it's not used within the hook
   const { initiateWebAuthnAuthentication, error } = useWebAuthnAuthentication();
+  const { login } = useAuth(); // Use login from AuthContext
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await initiateWebAuthnAuthentication(username);
-    if (response && response.status === 'success') {
-      navigate('/dashboard');  // Redirect to dashboard upon successful login
+    try {
+        const response = await initiateWebAuthnAuthentication(username);
+        // Ensure response.data exists and has the token property
+        if (response && response.status === 'success' && response.token) {
+            login(response.token); // Pass the token to login function
+            navigate('/dashboard'); // Navigate to the dashboard upon successful login
+        } else {
+            // Handle the case where login is not successful or token is missing
+            console.error('Login failed or token missing in response');
+        }
+    } catch (error) {
+        // Handle any errors that occur during the login process
+        console.error('Login error:', error);
     }
-  };
+};
+
 
   return (
     <div className="loginContainer">
-      <img src={`${process.env.PUBLIC_URL}../assets/speech_bubble.png`} alt="Discussable Logo" className="logoSmall"/>
+      <img src={`${process.env.PUBLIC_URL}/assets/speech_bubble.png`} alt="Discussable Logo" className="logoSmall"/>
       <form onSubmit={handleSubmit} className="loginForm">
         <input
           type="text"

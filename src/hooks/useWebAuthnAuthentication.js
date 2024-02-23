@@ -10,6 +10,7 @@ const useWebAuthnAuthentication = () => {
       const challengeResponse = await axiosInstance.post('/webauthn/login/challenge/', { username });
       const challengeOptions = challengeResponse.data;
 
+      // Convert challenge and allowCredentials from Base64URL to Uint8Array
       challengeOptions.challenge = base64urlToUint8Array(challengeOptions.challenge);
       if (challengeOptions.allowCredentials) {
         challengeOptions.allowCredentials = challengeOptions.allowCredentials.map(cred => ({
@@ -17,8 +18,10 @@ const useWebAuthnAuthentication = () => {
         }));
       }
 
+      // Request an assertion from the authenticator
       const assertion = await navigator.credentials.get({ publicKey: challengeOptions });
 
+      // Prepare the authentication response to be sent back to the server
       const authenticationResponse = {
         credential_id: arrayBufferToBase64(assertion.rawId),
         authenticator_data: arrayBufferToBase64(assertion.response.authenticatorData),
@@ -29,17 +32,10 @@ const useWebAuthnAuthentication = () => {
         type: 'webauthn.get'
       };
 
-      console.log("Sending authentication response to the server:", authenticationResponse);
-
+      // Send authentication response to the server
       const response = await axiosInstance.post('/webauthn/login/response/', authenticationResponse);
 
-       // Assuming your backend returns a token upon successful authentication
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token); // Save the token for future requests
-        // Optionally navigate the user to another page or set user context state here
-      }
-
-      return response.data;  // Returning the response from the server
+      return response.data; // Returning the response from the server for further handling in the component
     } catch (e) {
       console.error("Authentication error:", e);
       setError(e);
