@@ -42,6 +42,7 @@ const LoginPage = () => {
           placeholder="Enter Email Address"
           required
           className="loginInput"
+          autoFocus
         />
         <button type="submit" className="loginButton">Login with WebAuthn</button>
       </form>

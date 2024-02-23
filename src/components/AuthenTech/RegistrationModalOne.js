@@ -23,6 +23,7 @@ const ModalOne = ({ handleUserDetails, nextStep }) => {
                   placeholder="Preferred Name"
                   required
                   className="input"
+                  autoFocus
               />
               <button type="submit" className="submitButton">Next</button>
           </form>

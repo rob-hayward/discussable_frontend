@@ -32,6 +32,7 @@ const ModalTwo = ({ nextStep, handleSubmitEmail }) => {
               placeholder="Email address"
               required
               className="inputTwo"
+              autoFocus
           />
           <button type="submit" className="submitButtonTwo">Submit Email</button>
         </form>
