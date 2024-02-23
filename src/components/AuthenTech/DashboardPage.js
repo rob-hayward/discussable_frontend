@@ -1,46 +1,49 @@
+// src/components/AuthenTech/DashboardPage.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useLogout from "../../hooks/useLogout";
+import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
 import axiosInstance from "../../api/axiosConfig";
-import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const logout = useLogout();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
-    // Immediately invoke the async function inside useEffect
-    (async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login');
-        return; // Early return to avoid further execution if there's no token
-      }
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
 
+    (async () => {
       try {
         const response = await axiosInstance.get('/user/profile/');
-        setUserProfile(response.data); // Assuming the API returns user profile data
+        setUserProfile(response.data);
       } catch (error) {
         console.error('Error fetching user profile:', error);
-        logout(); // Log out if fetching user profile fails
+        logout(); // No need for additional navigation code here
       }
     })();
-  }, [navigate, logout]); // Assuming logout is stable across renders, otherwise consider using a callback hook or moving logout function inside useEffect if it doesn't depend on external state
+  }, [navigate, logout]);
 
   return (
-    <div className="dashboard-container">
-      <img src={`${process.env.PUBLIC_URL}/speech_bubble.png`} alt="Discussable Logo" className="logo"/>
-      <h1 className="dashboard-heading">Discussable Dashboard</h1>
-      {userProfile && <p>Welcome, {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
-      <div className="dashboard-options">
-        <Link to="/create-discussion" className="dashboard-link">Start a New Discussion</Link>
-        <Link to="/discussions" className="dashboard-link">Join an Existing Discussion</Link>
+      <div className="dashboard-container">
+        <img src={`${process.env.PUBLIC_URL}/speech_bubble.png`} alt="Discussable Logo" className="logo"/>
+        <h1 className="dashboard-heading">Discussable Dashboard</h1>
+        {userProfile && <p>Welcome, {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
+        <div className="dashboard-options">
+          <Link to="/create-discussion" className="dashboard-link">Start a New Discussion</Link>
+          <Link to="/discussions" className="dashboard-link">Join an Existing Discussion</Link>
+        </div>
+        <div className="auth-options">
+          <button onClick={() => {
+            logout(); // Call logout from AuthContext
+            navigate('/'); // Navigate to the welcome page
+          }} className="logout-button">Logout
+          </button>
+        </div>
       </div>
-      <div className="auth-options">
-        <button onClick={logout} className="logout-button">Logout</button>
-      </div>
-    </div>
   );
 };
 
