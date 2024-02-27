@@ -1,0 +1,75 @@
+/* src/styles/global.css */
+@import 'utilities.css';
+@import 'themes.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: 'Roboto', sans-serif;
+}
+
+input, button {
+  outline: none;
+}
+
+button {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Apply utility classes for commonly used styles */
+.container {
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 20vh;
+  position: relative;
+  text-align: center;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Global Button Style */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  padding: 10px 20px;
+  min-width: 120px; /* Ensuring equal width for both buttons */
+  background-color: transparent; /* Clear background for minimalism */
+  color: #E0E0E0; /* Light silver-ish color for text */
+  text-decoration: none; /* Removing text underline */
+  border: 2px solid #E0E0E0; /* Silver border */
+  border-radius: 25px; /* Rounded edges for a modern look */
+  font-size: 1rem;
+  font-weight: 500; /* Slightly bold text */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.button:hover {
+  background-color: #E0E0E0; /* Silver background on hover */
+  color: #000; /* Black text on hover for contrast */
+  border-color: transparent; /* Border transitions to transparent */
+  text-decoration: none; /* Ensuring no underline on hover */
+}
+
+@media (max-width: 768px) {
+  .button {
+    font-size: 0.9rem; /* Smaller font size on smaller screens */
+    min-width: 100px; /* Adjusting minimum width for smaller screens */
+  }
+}
+
+.error-text {
+  color: var(--color-error);
+}

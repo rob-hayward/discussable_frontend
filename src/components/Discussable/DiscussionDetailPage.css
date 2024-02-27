@@ -1,70 +1,119 @@
-/* src/components/Discussable/DiscussionDetailPage.css */
-
 .discussion-detail-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* Allocate space for details and voting/pie chart */
+  gap: 20px; /* Space between columns */
   padding: 20px;
-  border: 2px solid #E0E0E0;
-  border-radius: 10px;
-  background-color: #000;
-  color: #E0E0E0;
-  max-width: 700px;
-  margin: 20px auto;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  max-width: 960px; /* Adjusted for more space */
+  margin: 40px auto;
 }
 
-.discussion-info, .comment-details {
+.discussion-content {
+  border-right: 2px solid #333; /* Visual divider */
+  padding-right: 20px; /* Space before the divider */
+}
+
+.vote-and-chart {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text-details {
-  flex-grow: 1;
+  flex-direction: row; /* Adjust for side-by-side layout */
+  align-items: center; /* Align items vertically in the center */
+  gap: 20px; /* Space between buttons and pie chart */
 }
 
 .vote-buttons {
-  margin-top: 10px;
-}
-
-.comment {
-  background-color: #222;
-  border: 1px solid #E0E0E0;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  padding: 10px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Space between buttons */
+  align-items: center; /* Center buttons */
 }
 
-.new-comment-form textarea, button {
+.pie-chart-container {
+  flex: 1; /* Allows the pie chart container to fill available space */
+  display: flex;
+  justify-content: center; /* Center pie chart horizontally */
+  align-items: center; /* Center pie chart vertically */
+  min-width: 150px; /* Minimum width of the pie chart */
+  min-height: 150px; /* Minimum height, adjust as needed */
+}
+
+/* Ensure the SVG within the pie-chart-container fills it */
+.pie-chart-container svg {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+  height: 100%;
 }
 
-button {
-  background-color: #333;
-  color: #E0E0E0;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
+.word-piechart {
+  width: 66%; /* Use the full width of the parent container */
+  height: 200px; /* Adjust based on your design needs */
+  /* Ensure the container has a size before the chart is drawn */
+}
+
+.comment-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* Allocate space for details and voting/pie chart */
+  gap: 20px; /* Space between columns */
+  padding: 20px;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  max-width: 960px; /* Adjusted for more space */
+  margin: 40px auto;
+}
+
+.comment-content {
+  border-right: 2px solid #333; /* Visual divider */
+  padding-right: 20px; /* Space before the divider */
+}
+
+.comment-voting {
+  display: flex;
+  flex-direction: row; /* Adjust for side-by-side layout */
+  align-items: center; /* Align items vertically in the center */
+  gap: 20px; /* Space between buttons and pie chart */
+}
+
+.vote-buttons-comment {
+   display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Space between buttons */
+  align-items: center; /* Center buttons */
+}
+
+.hidden-content {
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #444;
+.new-comment-container {
+  padding: 20px;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  max-width: 960px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (max-width: 768px) {
-  .discussion-info, .comment-details {
-    flex-direction: column;
-  }
-
-  .vote-buttons, .new-comment-form button {
-    align-self: center;
-  }
-
-  .word-piechart {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 300px; /* Adjust the maximum width of the pie chart for smaller screens */
-  }
+.new-comment-form {
+  display: flex;
+  gap: 10px; /* Adjust the gap between elements as needed */
+  align-items: center; /* Align items vertically */
 }
+
+.new-comment-form textarea {
+  flex-grow: 1; /* Let the textarea fill the available horizontal space */
+  margin-right: 10px; /* Ensure some space between the textarea and the button */
+  padding: 10px; /* Adjust padding for visual appeal */
+  border-radius: var(--border-radius-5); /* Match your site's border radius */
+  border: 1px solid #ccc; /* A subtle border, adjust as needed */
+}
+

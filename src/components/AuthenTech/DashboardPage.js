@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
 import axiosInstance from "../../api/axiosConfig";
+import './DashboardPage.css'
+import logo from "../../assets/logo.png";
 
 const DashboardPage = () => {
   const { logout } = useAuth();
@@ -29,8 +31,7 @@ const DashboardPage = () => {
 
   return (
       <div className="dashboard-container">
-        <img src={`${process.env.PUBLIC_URL}/speech_bubble.png`} alt="Discussable Logo" className="logo"/>
-        <h1 className="dashboard-heading">Discussable Dashboard</h1>
+          <img src={logo} alt="Discussable Logo" className="logo"/>
         {userProfile && <p>Welcome, {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
         <div className="dashboard-options">
           <Link to="/create-discussion" className="dashboard-link">Start a New Discussion</Link>

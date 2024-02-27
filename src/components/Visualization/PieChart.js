@@ -25,8 +25,11 @@ const PieChart = ({ word }) => {
             }, [word]);
 
             const drawPieChart = (data, elementId) => {
-            const width = 700;
-            const height = Math.min(width, 370);
+              // Instead of fixed dimensions, consider using the container's dimensions
+            const container = document.getElementById(elementId);
+            const width = container.clientWidth; // Get the width of the container
+            const height = container.clientHeight; // Get the height of the container or use the same value as width for a square aspect ratio
+            const fontSize = Math.max(width, height) / 25; // Adjust divisor as needed for scaling
 
             const color = d3.scaleOrdinal()
                             .domain(['Approve votes', 'Reject votes', 'No Vote'])
@@ -60,7 +63,7 @@ const PieChart = ({ word }) => {
                 .attr("transform", d => `translate(${arc.centroid(d)})`)
                 .style("fill", "black")
                 .style("font-weight", "bold")
-                .style("font-size", "2.8em")
+                .style("font-size", `${fontSize}px`)
                 .each(function (d) {
                     const text = d3.select(this);
                     text.append("tspan")

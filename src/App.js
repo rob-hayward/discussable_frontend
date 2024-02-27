@@ -6,6 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/global.css';
 import Navbar from './components/Navbar';
 import WelcomePage from './components/AuthenTech/WelcomePage';
 import LoginPage from './components/AuthenTech/LoginPage';

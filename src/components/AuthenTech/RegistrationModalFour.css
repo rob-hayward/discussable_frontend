@@ -27,22 +27,27 @@
   margin-bottom: 10px;
 }
 
-.buttonFour {
-  padding: 10px 20px;
-  background-color: transparent;
-  color: #E0E0E0;
-  border: 2px solid #E0E0E0;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  cursor: pointer;
-}
+/*.buttonFour {*/
+/*  padding: 10px 20px;*/
+/*  background-color: transparent;*/
+/*  color: #E0E0E0;*/
+/*  border: 2px solid #E0E0E0;*/
+/*  border-radius: 25px;*/
+/*  font-size: 1rem;*/
+/*  font-weight: 500;*/
+/*  transition: background-color 0.3s, color 0.3s, border-color 0.3s;*/
+/*  cursor: pointer;*/
+/*}*/
 
-.buttonFour:hover {
-  background-color: #E0E0E0;
-  color: #000;
-  border-color: transparent;
+/*.buttonFour:hover {*/
+/*  background-color: #E0E0E0;*/
+/*  color: #000;*/
+/*  border-color: transparent;*/
+/*}*/
+
+.modal-button {
+  width: 50%; /* Adjust the width as needed */
+  margin: 0 auto; /* Center the button */
 }
 
 .step-indicator {

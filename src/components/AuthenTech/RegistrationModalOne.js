@@ -25,7 +25,8 @@ const ModalOne = ({ handleUserDetails, nextStep }) => {
                   className="input"
                   autoFocus
               />
-              <button type="submit" className="submitButton">Next</button>
+              <button type="submit" className="button modal-button">Next</button>
+
           </form>
           <div className="step-indicator">Step 1 of 4</div>
       </div>

@@ -4,6 +4,7 @@ import './RegistrationModalFour.css';
 import useWebAuthnRegistration from '../../hooks/useWebAuthnRegistration';
 import { useUser } from '../../contexts/UserContext';
 import { useAuth } from '../../contexts/AuthContext';
+import logo from "../../assets/logo.png";
 
 const ModalFour = ({ onRegistrationComplete }) => {
     const { userDetails } = useUser();
@@ -30,11 +31,11 @@ const ModalFour = ({ onRegistrationComplete }) => {
 
     return (
         <div className="modalContainerFour">
-            <img src={`${process.env.PUBLIC_URL}/AuthenTechLogo.png`} alt="AuthenTech Logo" className="logoSmall"/>
+            <img src={logo} alt="Discussable Logo" className="logo"/>
             <p className="paragraphFour">
-                Complete your AuthenTech registration by using fingerprint or face scan on your device with WebAuthn.
+                Complete your Discussable registration by using fingerprint or face scan on your device with WebAuthn.
             </p>
-            <button className="buttonFour" onClick={handleWebAuthnRegister}>Register with WebAuthn</button>
+            <button onClick={handleWebAuthnRegister} className="button modal-button">Register with WebAuthn</button>
             {registrationError && <p className="errorFour">Error: {registrationError}</p>}
             {error && <p className="errorFour">Error: {error.message}</p>}
             <div className="step-indicator">Step 4 of 4</div>

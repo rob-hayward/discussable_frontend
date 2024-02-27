@@ -3,7 +3,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from '../contexts/AuthContext';
-import speechbubble from '../assets/speech_bubble.png';
+import './Navbar.css';
+import logo from '../assets/logo.png';
 
 
 const Navbar = () => {
@@ -18,9 +19,9 @@ const Navbar = () => {
   const logoLink = isLoggedIn ? '/dashboard' : '/';
 
     return (
-    <nav className="navbar navbar-light bg-light">
+    <nav className="navbar">
       <Link className="navbar-brand custom-logo-padding" to={logoLink}>
-        <img src={speechbubble} alt="Discussable Logo" style={{ height: "40px" }} />
+        <img src={logo} alt="Discussable Logo" style={{ height: "40px" }} />
       </Link>
         <div className="dropdown custom-bars-padding">
             <button className="navbar-toggler btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"

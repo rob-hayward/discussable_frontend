@@ -1,4 +1,3 @@
-//src/components/Discussable/DiscussionDetailPage.js
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
@@ -72,74 +71,73 @@ const DiscussionDetailPage = () => {
     };
 
     return (
+        <div>
         <div className="discussion-detail-container">
-            <h2>Discussion Detail Page</h2>
-            {discussion && (
-                <div>
-                    {/*<p>ID: {discussion.id}</p>*/}
-                    <p>Category: {discussion.category}</p>
-                    <p>Subject: {discussion.subject}</p>
-                    <p>By: {discussion.creator_name}</p>
-                    {/*<p>Total Votes: {discussion.total_votes}</p>*/}
-                    {/*<p>Positive Votes: {discussion.positive_votes}</p>*/}
-                    {/*<p>Negative Votes: {discussion.negative_votes}</p>*/}
-                    <PieChart word={discussion}/>
-                    <div>
-                        <button onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
-                        <button onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
-                    </div>
-                </div>
-            )}
-            <h3>Comments</h3>
-            {comments.length > 0 ? (
-                comments.map((comment) => {
-                    const isHiddenByUser = comment.user_preference === 'hide';
-                    const isHiddenByCommunity = comment.visibility_status === 'hidden' && comment.user_preference !== 'show';
+          {discussion && (
+            <div className="discussion-content">
+              <h2>Discussion Detail Page</h2>
+              <h4>Category: {discussion.category}</h4>
+              <h4>Subject: {discussion.subject}</h4>
+              <p>Discussion by: {discussion.creator_name}</p>
+            </div>
+          )}
 
-                    return (
-                        <div key={comment.id} className={`comment ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
-                            {(isHiddenByCommunity || isHiddenByUser) ? (
+          {discussion && (
+              <div className="vote-and-chart">
+                <div className="vote-buttons">
+                  <button className="button vote" onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
+                  <button className="button vote" onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
+                </div>
+                <div className="pie-chart-container">
+                  <PieChart word={discussion} />
+                </div>
+              </div>
+            )}
+        </div>
+
+            {comments.length > 0 && comments.map((comment) => {
+              const isHiddenByUser = comment.user_preference === 'hide';
+              const isHiddenByCommunity = comment.visibility_status === 'hidden' && comment.user_preference !== 'show';
+
+              return (
+                <div key={comment.id} className={`comment-container ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
+                    {(isHiddenByCommunity || isHiddenByUser) ? (
                                 <div className="hidden-content">
                                     This comment is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
                                     <button onClick={() => updateVisibilityPreference('comment', comment.id, 'show')}>Show</button>
                                 </div>
                             ) : (
-                                <>
-                                    {/*<p>Comment ID: {comment.id}</p>*/}
-                                    <p>By: {comment.creator_name}</p>
-                                    <p>Content: {comment.comment_content}</p>
-                                    {/*<p>Positive Votes: {comment.positive_votes}</p>*/}
-                                    {/*<p>Negative Votes: {comment.negative_votes}</p>*/}
-                                    <PieChart word={comment}/>
-                                    <div>
-                                        <button onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
-                                        <button onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
-                                        <button
-                                            onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide
-                                        </button>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    );
-                })
-            ) : (
-                <p>No comments yet.</p>
-            )}
-            <form onSubmit={handleCommentSubmit} className="new-comment-form">
-                <textarea
-                    value={newCommentContent}
-                    onChange={handleNewCommentChange}
-                    placeholder="Add a new comment..."
-                    required
-                ></textarea>
-                <button type="submit">Post Comment</button>
-            </form>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
+                  <div className="comment-content">
+                    <p>Comment by: {comment.creator_name}</p>
+                    <p>{comment.comment_content}</p>
+                  </div>
+                    )}
+                  <div className="comment-voting">
+                    <div className="vote-buttons-comment">
+                      <button className="button vote" onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
+                      <button className="button vote" onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
+                      <button className="button vote" onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide</button>
+                    </div>
+                    <PieChart word={comment}/>
+                  </div>
+                </div>
+              );
+            })}
+
+        <div className="new-comment-container">
+                <form onSubmit={handleCommentSubmit} className="new-comment-form">
+                    <textarea
+                        value={newCommentContent}
+                        onChange={handleNewCommentChange}
+                        placeholder="Add a new comment..."
+                        required
+                    ></textarea>
+                    <button className="button vote" type="submit">Post Comment</button>
+                </form>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
         </div>
     );
 };
 
 export default DiscussionDetailPage;
-
-
