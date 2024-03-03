@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useWebAuthnAuthentication from '../../hooks/useWebAuthnAuthentication';
 import { useAuth } from '../../contexts/AuthContext'; // Ensure the path is correct
 import './LoginPage.css';
+import logo from "../../assets/logo.png";
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -33,8 +34,8 @@ const LoginPage = () => {
 
   return (
     <div className="loginContainer">
-      <img src={`${process.env.PUBLIC_URL}/assets/speech_bubble.png`} alt="Discussable Logo" className="logoSmall"/>
-      <form onSubmit={handleSubmit} className="loginForm">
+        <img src={logo} alt="Discussable Logo" className="logo"/>
+        <form onSubmit={handleSubmit} className="loginForm">
         <input
           type="text"
           value={username}

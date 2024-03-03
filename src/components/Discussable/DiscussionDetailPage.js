@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PieChart from '../Visualization/PieChart';
 import './DiscussionDetailPage.css';
 
 const DiscussionDetailPage = () => {
     const { discussionId } = useParams();
+    const navigate = useNavigate();
     const [discussion, setDiscussion] = useState(null);
     const [comments, setComments] = useState([]);
     const [newCommentContent, setNewCommentContent] = useState('');
@@ -70,61 +71,87 @@ const DiscussionDetailPage = () => {
         }
     };
 
+    const handleHideDiscussion = async () => {
+      try {
+          await updateVisibilityPreference('discussion', discussionId, 'hide');
+          navigate('/discussions'); // Adjust the path as necessary for your route setup
+      } catch (error) {
+          console.error("Error hiding discussion:", error);
+      }
+  };
+
+
+
     return (
         <div>
-        <div className="discussion-detail-container">
-          {discussion && (
-            <div className="discussion-content">
-              <h2>Discussion Detail Page</h2>
-              <h4>Category: {discussion.category}</h4>
-              <h4>Subject: {discussion.subject}</h4>
-              <p>Discussion by: {discussion.creator_name}</p>
-            </div>
-          )}
+            <h2 className="page-title">Discussion Detail Page</h2>
+            <div className="discussion-detail-container">
+                {discussion && (
+                    <div className="discussion-content">
 
-          {discussion && (
-              <div className="vote-and-chart">
-                <div className="vote-buttons">
-                  <button className="button vote" onClick={() => handleVote('discussion', discussionId, 1)}>Upvote</button>
-                  <button className="button vote" onClick={() => handleVote('discussion', discussionId, -1)}>Downvote</button>
-                </div>
-                <div className="pie-chart-container">
-                  <PieChart word={discussion} />
-                </div>
-              </div>
-            )}
-        </div>
+                        <h4>Category: {discussion.category}</h4>
+                        <h4>Subject: {discussion.subject}</h4>
+                        <p>Discussion by: {discussion.creator_name}</p>
+                    </div>
+                )}
+
+                {discussion && (
+                    <div className="vote-and-chart">
+                        <div className="vote-buttons">
+                            <button className="button vote"
+                                    onClick={() => handleVote('discussion', discussionId, 1)}>Upvote
+                            </button>
+                            <button className="button vote"
+                                    onClick={() => handleVote('discussion', discussionId, -1)}>Downvote
+                            </button>
+                            <button className="button vote" onClick={handleHideDiscussion}>Hide</button>
+                        </div>
+                        <div className="pie-chart-container">
+                        <PieChart word={discussion}/>
+                        </div>
+                    </div>
+                )}
+            </div>
 
             {comments.length > 0 && comments.map((comment) => {
-              const isHiddenByUser = comment.user_preference === 'hide';
-              const isHiddenByCommunity = comment.visibility_status === 'hidden' && comment.user_preference !== 'show';
+                const isHiddenByUser = comment.user_preference === 'hide';
+                const isHiddenByCommunity = comment.visibility_status === 'hidden' && comment.user_preference !== 'show';
 
-              return (
-                <div key={comment.id} className={`comment-container ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
-                    {(isHiddenByCommunity || isHiddenByUser) ? (
-                                <div className="hidden-content">
-                                    This comment is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
-                                    <button onClick={() => updateVisibilityPreference('comment', comment.id, 'show')}>Show</button>
-                                </div>
-                            ) : (
-                  <div className="comment-content">
-                    <p>Comment by: {comment.creator_name}</p>
-                    <p>{comment.comment_content}</p>
-                  </div>
-                    )}
-                  <div className="comment-voting">
-                    <div className="vote-buttons-comment">
-                      <button className="button vote" onClick={() => handleVote('comment', comment.id, 1)}>Upvote</button>
-                      <button className="button vote" onClick={() => handleVote('comment', comment.id, -1)}>Downvote</button>
-                      <button className="button vote" onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide</button>
+                return (
+                    <div key={comment.id}
+                         className={`comment-container ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
+                        {(isHiddenByCommunity || isHiddenByUser) ? (
+                            <div className="hidden-content">
+                                This comment
+                                is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
+                                <button className="button vote"
+                                        onClick={() => updateVisibilityPreference('comment', comment.id, 'show')}>Show</button>
+                            </div>
+                        ) : (
+                            <div className="comment-content">
+                                <p>Comment by: {comment.creator_name}</p>
+                                <p>{comment.comment_content}</p>
+                            </div>
+                        )}
+                        <div className="comment-voting">
+                            <div className="vote-buttons-comment">
+                                <button className="button vote"
+                                        onClick={() => handleVote('comment', comment.id, 1)}>Upvote
+                                </button>
+                                <button className="button vote"
+                                        onClick={() => handleVote('comment', comment.id, -1)}>Downvote
+                                </button>
+                                <button className="button vote"
+                                        onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide
+                                </button>
+                            </div>
+                            <PieChart word={comment}/>
+                        </div>
                     </div>
-                    <PieChart word={comment}/>
-                  </div>
-                </div>
-              );
+                );
             })}
 
-        <div className="new-comment-container">
+            <div className="new-comment-container">
                 <form onSubmit={handleCommentSubmit} className="new-comment-form">
                     <textarea
                         value={newCommentContent}
@@ -135,7 +162,7 @@ const DiscussionDetailPage = () => {
                     <button className="button vote" type="submit">Post Comment</button>
                 </form>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </div>
+            </div>
         </div>
     );
 };

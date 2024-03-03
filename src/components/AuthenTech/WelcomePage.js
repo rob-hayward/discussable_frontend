@@ -14,9 +14,8 @@ const WelcomePage = () => {
           <h1>Discussable</h1>
           <div className="paragraph-container">
               <ul>
-                  <li>Freedom to speak.</li>
-                  <li>Freedom to listen.</li>
-                  <li>Community control, personal control.</li>
+                  <li>Freedom to Speak. Freedom to Listen</li>
+                  <li>Community Content, Personally Controlled.</li>
               </ul>
               <div className="auth-options">
                   <Link to="/register" className="auth-link">Register</Link>

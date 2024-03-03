@@ -1,4 +1,3 @@
-// src/components/Visualization/PieChart.js
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
@@ -22,68 +21,68 @@ const PieChart = ({ word }) => {
         }
 
         drawPieChart(data, `chart-word-${word.id}`);
-            }, [word]);
+    }, [word]);
 
-            const drawPieChart = (data, elementId) => {
-              // Instead of fixed dimensions, consider using the container's dimensions
-            const container = document.getElementById(elementId);
-            const width = container.clientWidth; // Get the width of the container
-            const height = container.clientHeight; // Get the height of the container or use the same value as width for a square aspect ratio
-            const fontSize = Math.max(width, height) / 25; // Adjust divisor as needed for scaling
+    const drawPieChart = (data, elementId) => {
+        // Manually set dimensions
+        const width = 170; // Set the width of the pie chart
+        const height = 170; // Set the height of the pie chart
+        const radius = Math.min(width, height) / 2; // Ensure the pie chart fits within the SVG
+        const fontSize = radius / 10; // Adjust font size based on the radius
 
-            const color = d3.scaleOrdinal()
-                            .domain(['Approve votes', 'Reject votes', 'No Vote'])
-                            .range(['rgb(250, 232, 0)', '#333', 'white']);
+        const color = d3.scaleOrdinal()
+            .domain(['Positive votes', 'Negative votes', 'No Vote'])
+            .range(['white', 'black', '#ccc']);
 
-            const pie = d3.pie().sort(null).value(d => d.value);
-            const arc = d3.arc().innerRadius(0).outerRadius(Math.min(width, height) / 2 - 1);
-            const arcs = pie(data);
+        const pie = d3.pie().sort(null).value(d => d.value);
+        const arc = d3.arc().innerRadius(0).outerRadius(radius);
+        const arcs = pie(data);
 
-            const svg = d3.create("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("viewBox", [-width / 2, -height / 2, width, height])
-                .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+        const svg = d3.create("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [-width / 2, -height / 2, width, height])
+            .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
-            svg.append("g")
-                .attr("stroke", "white")
-                .selectAll("path")
-                .data(arcs)
-                .join("path")
-                .attr("fill", d => color(d.data.name))
-                .attr("d", arc)
-                .append("title")
-                .text(d => `${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
+        svg.append("g")
+            .attr("stroke", "white")
+            .selectAll("path")
+            .data(arcs)
+            .join("path")
+            .attr("fill", d => color(d.data.name))
+            .attr("d", arc)
+            .append("title")
+            .text(d => `${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
 
-            svg.append("g")
-                .attr("text-anchor", "middle")
-                .selectAll("text")
-                .data(arcs)
-                .join("text")
-                .attr("transform", d => `translate(${arc.centroid(d)})`)
-                .style("fill", "black")
-                .style("font-weight", "bold")
-                .style("font-size", `${fontSize}px`)
-                .each(function (d) {
-                    const text = d3.select(this);
-                    text.append("tspan")
-                        .attr("x", 0)
-                        .attr("dy", "-0.1em")
-                        .text(`${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
+        svg.append("g")
+            .attr("text-anchor", "middle")
+            .selectAll("text")
+            .data(arcs)
+            .join("text")
+            .attr("transform", d => `translate(${arc.centroid(d)})`)
+            .style("font-weight", "bold")
+            .style("font-size", `${fontSize}px`)
+            .each(function (d) {
+                const text = d3.select(this);
+                const textColor = d.data.name === 'Negative votes' ? 'white' : 'black'; // Change text color based on vote type
+                text.style("fill", textColor);
+                text.append("tspan")
+                    .attr("x", 0)
+                    .attr("dy", "-0.1em")
+                    .text(`${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
 
-                    // Add this line to round the percentage to the nearest whole number
-                    const roundedPercentage = Math.round(d.data.percentage);
+                // Add this line to round the percentage to the nearest whole number
+                const roundedPercentage = Math.round(d.data.percentage);
 
-                    text.append("tspan")
-                        .attr("x", 0)
-                        .attr("dy", "1.2em")
-                        .text(`${roundedPercentage}%`);
-                });
+                text.append("tspan")
+                    .attr("x", 0)
+                    .attr("dy", "1.2em")
+                    .text(`${roundedPercentage}%`);
+            });
 
-            document.getElementById(elementId).innerHTML = '';
-            document.getElementById(elementId).appendChild(svg.node());
-        };
-
+        document.getElementById(elementId).innerHTML = '';
+        document.getElementById(elementId).appendChild(svg.node());
+    };
 
     return <div className="word-piechart" id={`chart-word-${word.id}`}></div>;
 };

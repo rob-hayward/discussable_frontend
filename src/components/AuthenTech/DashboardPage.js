@@ -32,7 +32,8 @@ const DashboardPage = () => {
   return (
       <div className="dashboard-container">
           <img src={logo} alt="Discussable Logo" className="logo"/>
-        {userProfile && <p>Welcome, {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
+        {userProfile && <p>Welcome to Discussable {userProfile.preferred_name}!</p>} {/* Display user's preferred name */}
+        <p>Speak Kindly. Listen Well.</p>
         <div className="dashboard-options">
           <Link to="/create-discussion" className="dashboard-link">Start a New Discussion</Link>
           <Link to="/discussions" className="dashboard-link">Join an Existing Discussion</Link>

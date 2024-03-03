@@ -51,10 +51,10 @@ const DiscussionsListPage = () => {
                                 </div>
                             ) : (
                                 <>
-                                    <Link to={`/discussions/${discussion.id}`}>
-                                        <h3>{discussion.subject}</h3>
-                                    </Link>
                                     <p>Category: {discussion.category}</p>
+                                    <Link to={`/discussions/${discussion.id}`}>
+                                        <h3>Subject: {discussion.subject}</h3>
+                                    </Link>
                                     <p>By: {discussion.creator_name}</p>
                                     {/*<p>Total Votes: {discussion.total_votes}</p>*/}
                                     {/*<p>Positive Votes: {discussion.positive_votes}</p>*/}

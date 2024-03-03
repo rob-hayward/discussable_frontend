@@ -1,95 +1,64 @@
-.discussion-detail-container {
+.page-title {
+  text-align: center; /* Centers the text */
+  width: 100%; /* Ensures the element spans the full width of its container */
+  margin-top: 20px; /* Adds space above the title, moving it down */
+}
+
+.discussion-detail-container, .comment-container {
   display: grid;
-  grid-template-columns: 3fr 1fr; /* Allocate space for details and voting/pie chart */
+  grid-template-columns: 3fr 2fr; /* Adjust this to match the layout */
   gap: 20px; /* Space between columns */
   padding: 20px;
   border: var(--border-solid-e0);
   border-radius: var(--border-radius-10);
   background-color: var(--color-background);
   color: var(--color-text);
-  max-width: 960px; /* Adjusted for more space */
+  max-width: 960px;
   margin: 40px auto;
 }
 
-.discussion-content {
+.discussion-content, .comment-content {
   border-right: 2px solid #333; /* Visual divider */
   padding-right: 20px; /* Space before the divider */
 }
 
-.vote-and-chart {
+.vote-and-chart, .comment-voting {
   display: flex;
-  flex-direction: row; /* Adjust for side-by-side layout */
-  align-items: center; /* Align items vertically in the center */
-  gap: 20px; /* Space between buttons and pie chart */
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
 }
 
-.vote-buttons {
+/* Aligning buttons within the flex container */
+.vote-buttons, .vote-buttons-comment {
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  gap: 10px; /* Space between buttons */
-  align-items: center; /* Center buttons */
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end; /* Align buttons to the right */
 }
 
-.pie-chart-container {
-  flex: 1; /* Allows the pie chart container to fill available space */
-  display: flex;
-  justify-content: center; /* Center pie chart horizontally */
-  align-items: center; /* Center pie chart vertically */
-  min-width: 150px; /* Minimum width of the pie chart */
-  min-height: 150px; /* Minimum height, adjust as needed */
-}
+
+/*.pie-chart-container {*/
+/*  flex: 1; !* Allows the pie chart container to fill available space *!*/
+/*  display: flex;*/
+/*  justify-content: center; !* Center pie chart horizontally *!*/
+/*  align-items: center; !* Center pie chart vertically *!*/
+/*  min-width: 150px; !* Minimum width of the pie chart *!*/
+/*  min-height: 150px; !* Minimum height, adjust as needed *!*/
+/*}*/
 
 /* Ensure the SVG within the pie-chart-container fills it */
-.pie-chart-container svg {
-  width: 100%;
-  height: 100%;
-}
+/*.pie-chart-container svg {*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*}*/
 
-.word-piechart {
-  width: 66%; /* Use the full width of the parent container */
-  height: 200px; /* Adjust based on your design needs */
-  /* Ensure the container has a size before the chart is drawn */
-}
-
-.comment-container {
-  display: grid;
-  grid-template-columns: 3fr 1fr; /* Allocate space for details and voting/pie chart */
-  gap: 20px; /* Space between columns */
-  padding: 20px;
-  border: var(--border-solid-e0);
-  border-radius: var(--border-radius-10);
-  background-color: var(--color-background);
-  color: var(--color-text);
-  max-width: 960px; /* Adjusted for more space */
-  margin: 40px auto;
-}
-
-.comment-content {
-  border-right: 2px solid #333; /* Visual divider */
-  padding-right: 20px; /* Space before the divider */
-}
-
-.comment-voting {
-  display: flex;
-  flex-direction: row; /* Adjust for side-by-side layout */
-  align-items: center; /* Align items vertically in the center */
-  gap: 20px; /* Space between buttons and pie chart */
-}
-
-.vote-buttons-comment {
-   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  gap: 10px; /* Space between buttons */
-  align-items: center; /* Center buttons */
-}
-
-.hidden-content {
-  color: #999;
-  background-color: #f0f0f0;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
+/*.word-piechart {*/
+/*  width: 66%; !* Use the full width of the parent container *!*/
+/*  height: 200px; !* Adjust based on your design needs *!*/
+/*  !* Ensure the container has a size before the chart is drawn *!*/
+/*}*/
 
 .new-comment-container {
   padding: 20px;
@@ -116,4 +85,19 @@
   border-radius: var(--border-radius-5); /* Match your site's border radius */
   border: 1px solid #ccc; /* A subtle border, adjust as needed */
 }
+
+.hidden-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Adjust content distribution */
+  position: relative; /* Needed for absolute positioning of the pseudo-elements */
+  width: 100%; /* Ensure it spans the full width */
+  padding: 10px 50px; /* Increase padding to shorten the lines */
+}
+
+/* Ensure there's enough spacing around the button and text to prevent the lines from overlapping */
+.hidden-content button {
+  margin-left: 10px; /* Adjust spacing between text and button */
+}
+
 

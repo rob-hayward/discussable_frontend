@@ -20,16 +20,16 @@
   padding: 10px;
 }
 
-.word-piechart {
-  width: 100px; /* Adjust based on desired size */
-  height: 100px; /* Adjust based on desired size */
-  flex-shrink: 0; /* Prevents the chart from shrinking */
-}
+/*.word-piechart {*/
+/*  width: 100px; !* Adjust based on desired size *!*/
+/*  height: 100px; !* Adjust based on desired size *!*/
+/*  flex-shrink: 0; !* Prevents the chart from shrinking *!*/
+/*}*/
 
-.word-piechart svg {
-  width: 100%;
-  height: auto;
-}
+/*.word-piechart svg {*/
+/*  width: 100%;*/
+/*  height: auto;*/
+/*}*/
 
 .discussion h3,
 .link {
@@ -65,13 +65,13 @@
 /*  !*border-color: transparent;*!*/
 /*}*/
 
-.hidden-content {
-  color: #999;
-  background-color: #f0f0f0;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
+/*.hidden-content {*/
+/*  color: #999;*/
+/*  background-color: #f0f0f0;*/
+/*  padding: 10px;*/
+/*  margin-bottom: 10px;*/
+/*  cursor: pointer;*/
+/*}*/
 
 @media (max-width: 768px) {
   .discussion {
@@ -79,10 +79,10 @@
     align-items: flex-start;
   }
 
-  .word-piechart {
-    align-self: center; /* Center the pie chart on smaller screens */
-    margin-top: 10px; /* Adds some space above the pie chart on smaller screens */
-  }
+  /*.word-piechart {*/
+  /*  align-self: center; !* Center the pie chart on smaller screens *!*/
+  /*  margin-top: 10px; !* Adds some space above the pie chart on smaller screens *!*/
+  /*}*/
 
   .discussions-list-container {
     width: 90%;
