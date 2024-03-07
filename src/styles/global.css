@@ -15,7 +15,13 @@ input, button {
 }
 
 button {
-  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: #E0E0E0; /* Light silver-ish color for text */
+  border: 2px solid #E0E0E0; /* Silver border */
+  border-radius: 25px; /* Rounded edges for a modern look */
+  padding: 5px 10px; /* Adjusted padding for consistency */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 a {
@@ -23,7 +29,6 @@ a {
   color: inherit;
 }
 
-/* Apply utility classes for commonly used styles */
 .container {
   padding: 20px;
   max-width: 500px;
@@ -37,36 +42,30 @@ a {
   color: var(--color-text);
 }
 
-/* Global Button Style */
+/* Global Button Style with minimum width */
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 10px;
-  padding: 10px 20px;
-  min-width: 120px; /* Ensuring equal width for both buttons */
-  background-color: transparent; /* Clear background for minimalism */
-  color: #E0E0E0; /* Light silver-ish color for text */
-  text-decoration: none; /* Removing text underline */
-  border: 2px solid #E0E0E0; /* Silver border */
-  border-radius: 25px; /* Rounded edges for a modern look */
-  font-size: 1rem;
-  font-weight: 500; /* Slightly bold text */
+  cursor: pointer;
+  background-color: transparent;
+  color: #E0E0E0; /* Matching the light color for text */
+  border: 2px solid #E0E0E0; /* Consistent silver border */
+  border-radius: 25px; /* Keeping the rounded edges */
+  padding: 5px 10px; /* Standard padding for buttons */
+  min-width: 120px; /* Ensuring a minimum width for all buttons */
+  text-align: center; /* Ensure text is centered within the button */
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  cursor: pointer; /* Pointer cursor on hover */
 }
 
 .button:hover {
   background-color: #E0E0E0; /* Silver background on hover */
-  color: #000; /* Black text on hover for contrast */
-  border-color: transparent; /* Border transitions to transparent */
-  text-decoration: none; /* Ensuring no underline on hover */
+  color: #000; /* Contrast with black text on hover */
+  border-color: transparent; /* Transition border to transparent */
 }
 
 @media (max-width: 768px) {
   .button {
-    font-size: 0.9rem; /* Smaller font size on smaller screens */
-    min-width: 100px; /* Adjusting minimum width for smaller screens */
+    padding: 4px 8px; /* Slightly smaller padding on smaller screens */
+    font-size: 0.9rem; /* Adjusting font size for readability */
+    min-width: 100px; /* Slightly smaller minimum width on smaller screens */
   }
 }
 

@@ -1,0 +1,30 @@
+/*src/components/Discussable/HideOptionsModal.css*/
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5); /* Dim the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.modal-content {
+  background-color: var(--color-background); /* Using variable for background */
+  color: var(--color-text); /* Using variable for text color */
+  border-radius: var(--border-radius-10); /* Using variable for border radius */
+  padding: 60px;
+  width: 80%; /* Make the modal width less than the screen width */
+  max-width: 400px; /* Maximum width of the modal */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  border: var(--border-solid-e0); /* Using variable for border */
+}
+
+
+.modal-content button {
+  margin-bottom: 10px;
+}

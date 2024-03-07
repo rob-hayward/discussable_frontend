@@ -1,5 +1,5 @@
 // src/components/Discussable/DiscussionsListPage.js
-// src/components/Discussable/DiscussionsListPage.js
+
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosConfig';
 import { Link } from 'react-router-dom';
@@ -47,7 +47,7 @@ const DiscussionsListPage = () => {
                             {(isHiddenByCommunity || isHiddenByUser) ? (
                                 <div className="hidden-content">
                                     This discussion is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
-                                    <button onClick={() => updateVisibilityPreference(discussion.id, 'show')}>Show</button>
+                                    <button className="button" onClick={() => updateVisibilityPreference(discussion.id, 'show')}>Show</button>
                                 </div>
                             ) : (
                                 <>
@@ -59,7 +59,7 @@ const DiscussionsListPage = () => {
                                     {/*<p>Total Votes: {discussion.total_votes}</p>*/}
                                     {/*<p>Positive Votes: {discussion.positive_votes}</p>*/}
                                     {/*<p>Negative Votes: {discussion.negative_votes}</p>*/}
-                                    <button onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide
+                                    <button className="button" onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide
                                     </button>
                                 </>
                             )}

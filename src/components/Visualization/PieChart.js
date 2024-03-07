@@ -5,14 +5,14 @@ const PieChart = ({ word }) => {
     useEffect(() => {
         let data;
 
-        // Ensure that the necessary properties are defined and not null
         const positiveVotes = word.positive_votes ?? 0;
         const negativeVotes = word.negative_votes ?? 0;
         const positivePercentage = word.positive_percentage ?? 0;
         const negativePercentage = word.negative_percentage ?? 0;
 
         if (positiveVotes === 0 && negativeVotes === 0) {
-            data = [{ name: 'No Vote', value: 1 }];
+            // Adjusted to use a more descriptive name
+            data = [{ name: 'No Votes', value: 1, percentage: 0 }];
         } else {
             data = [
                 { name: 'Positive votes', value: positiveVotes, percentage: positivePercentage },
@@ -24,14 +24,13 @@ const PieChart = ({ word }) => {
     }, [word]);
 
     const drawPieChart = (data, elementId) => {
-        // Manually set dimensions
-        const width = 170; // Set the width of the pie chart
-        const height = 170; // Set the height of the pie chart
-        const radius = Math.min(width, height) / 2; // Ensure the pie chart fits within the SVG
-        const fontSize = radius / 10; // Adjust font size based on the radius
+        const width = 170;
+        const height = 170;
+        const radius = Math.min(width, height) / 2;
+        const fontSize = radius / 10;
 
         const color = d3.scaleOrdinal()
-            .domain(['Positive votes', 'Negative votes', 'No Vote'])
+            .domain(['Positive votes', 'Negative votes', 'No Votes'])
             .range(['white', 'black', '#ccc']);
 
         const pie = d3.pie().sort(null).value(d => d.value);
@@ -64,20 +63,22 @@ const PieChart = ({ word }) => {
             .style("font-size", `${fontSize}px`)
             .each(function (d) {
                 const text = d3.select(this);
-                const textColor = d.data.name === 'Negative votes' ? 'white' : 'black'; // Change text color based on vote type
+                const textColor = d.data.name === 'Negative votes' ? 'white' : 'black';
                 text.style("fill", textColor);
-                text.append("tspan")
-                    .attr("x", 0)
-                    .attr("dy", "-0.1em")
-                    .text(`${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
-
-                // Add this line to round the percentage to the nearest whole number
-                const roundedPercentage = Math.round(d.data.percentage);
-
-                text.append("tspan")
-                    .attr("x", 0)
-                    .attr("dy", "1.2em")
-                    .text(`${roundedPercentage}%`);
+                // Check if the data is for "No Votes"
+                if (d.data.name === 'No Votes') {
+                    text.text("No Votes"); // Directly set text to "No Votes"
+                } else {
+                    text.append("tspan")
+                        .attr("x", 0)
+                        .attr("dy", "-0.1em")
+                        .text(`${d.data.name}: ${d.data.value.toLocaleString("en-US")}`);
+                    const roundedPercentage = Math.round(d.data.percentage);
+                    text.append("tspan")
+                        .attr("x", 0)
+                        .attr("dy", "1.2em")
+                        .text(`${roundedPercentage}%`);
+                }
             });
 
         document.getElementById(elementId).innerHTML = '';

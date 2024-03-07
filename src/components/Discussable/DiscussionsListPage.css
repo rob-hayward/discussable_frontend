@@ -1,91 +1,57 @@
-/* src/components/Discussable/DiscussionsListPage.css */
 .discussions-list-container {
   padding: 20px;
-  border: 2px solid #E0E0E0;
-  border-radius: 10px;
-  background-color: #000;
-  color: #E0E0E0;
-  max-width: 700px;
-  margin: 20px auto;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  max-width: 960px;
+  margin: 40px auto;
 }
 
 .discussion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #222;
-  border: 1px solid #E0E0E0;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  padding: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr; /* Match the layout from the detail page */
+  gap: 20px;
+  padding: 20px;
+  border: var(--border-solid-e0);
+  border-radius: var(--border-radius-10);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  margin-bottom: 20px; /* Space between discussion entries */
 }
 
-/*.word-piechart {*/
-/*  width: 100px; !* Adjust based on desired size *!*/
-/*  height: 100px; !* Adjust based on desired size *!*/
-/*  flex-shrink: 0; !* Prevents the chart from shrinking *!*/
-/*}*/
+.discussion-content {
+  border-right: 2px solid #333; /* Visual divider, similar to the detail page */
+  padding-right: 20px;
+}
 
-/*.word-piechart svg {*/
-/*  width: 100%;*/
-/*  height: auto;*/
-/*}*/
-
-.discussion h3,
-.link {
+.discussion h3, .link {
   color: #E0E0E0;
+  text-decoration: none; /* Removes underlining from links */
   cursor: pointer;
   transition: color 0.3s;
 }
 
-.discussion h3:hover,
-.link:hover {
-  color: #FFF; /* Lighter color on hover for visibility */
+.discussion h3:hover, .link:hover {
+  color: #FFF; /* Ensure hover effect is visible */
 }
 
 .discussion p {
   margin: 5px 0;
 }
 
-/*button {*/
-/*  !*padding: 10px 20px;*!*/
-/*  !*background-color: transparent;*!*/
-/*  !*color: #E0E0E0;*!*/
-/*  !*border: 2px solid #E0E0E0;*!*/
-/*  !*border-radius: 25px;*!*/
-/*  !*font-size: 1rem;*!*/
-/*  !*font-weight: 500;*!*/
-/*  !*transition: background-color 0.3s, color 0.3s, border-color 0.3s;*!*/
-/*  !*cursor: pointer;*!*/
-/*}*/
-
-/*button:hover {*/
-/*  !*background-color: #E0E0E0;*!*/
-/*  !*color: #000;*!*/
-/*  !*border-color: transparent;*!*/
-/*}*/
-
-/*.hidden-content {*/
-/*  color: #999;*/
-/*  background-color: #f0f0f0;*/
-/*  padding: 10px;*/
-/*  margin-bottom: 10px;*/
-/*  cursor: pointer;*/
-/*}*/
-
 @media (max-width: 768px) {
   .discussion {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr; /* Stack components on smaller screens */
   }
-
-  /*.word-piechart {*/
-  /*  align-self: center; !* Center the pie chart on smaller screens *!*/
-  /*  margin-top: 10px; !* Adds some space above the pie chart on smaller screens *!*/
-  /*}*/
 
   .discussions-list-container {
     width: 90%;
     margin: 20px auto;
+  }
+
+  .discussion-content, .pie-chart-container {
+    border: none;
+    padding-right: 0;
   }
 }

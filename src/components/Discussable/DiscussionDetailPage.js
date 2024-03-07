@@ -3,6 +3,8 @@ import axiosInstance from '../../api/axiosConfig';
 import { useParams, useNavigate } from 'react-router-dom';
 import PieChart from '../Visualization/PieChart';
 import './DiscussionDetailPage.css';
+import HideOptionsModal from './HideOptionsModal';
+
 
 const DiscussionDetailPage = () => {
     const { discussionId } = useParams();
@@ -11,6 +13,9 @@ const DiscussionDetailPage = () => {
     const [comments, setComments] = useState([]);
     const [newCommentContent, setNewCommentContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+    const [selectedCommentId, setSelectedCommentId] = useState(null);
+    const [selectedCreatorId, setSelectedCreatorId] = useState(null);
 
     const fetchDiscussion = useCallback(async () => {
         try {
@@ -80,6 +85,32 @@ const DiscussionDetailPage = () => {
       }
   };
 
+    const toggleModal = (commentId = null, creatorId = null) => {
+  console.log(`Toggling modal for commentId: ${commentId}, creatorId: ${creatorId}`); // Add this line for debugging
+  setSelectedCommentId(commentId);
+  setSelectedCreatorId(creatorId);
+  setIsModalOpen(!isModalOpen);
+
+  };
+
+    const handleOptionSelect = async (action, id) => {
+  console.log(`Action selected: ${action}, ID: ${id}`);
+
+  if (action === 'hideComment') {
+    await updateVisibilityPreference('comment', id, 'hide');
+  } else if (action === 'hideAllFromUser') {
+    // Assuming a separate function or API call to handle blocking a user
+    console.log(`Blocking all content from user ID: ${id}`);
+    // Implement blocking logic or API call here
+  }
+
+  // Re-fetch data to reflect changes
+  fetchDiscussion();
+  setIsModalOpen(false); // Close the modal
+};
+
+
+
 
 
     return (
@@ -141,12 +172,23 @@ const DiscussionDetailPage = () => {
                                 <button className="button vote"
                                         onClick={() => handleVote('comment', comment.id, -1)}>Downvote
                                 </button>
-                                <button className="button vote"
-                                        onClick={() => updateVisibilityPreference('comment', comment.id, 'hide')}>Hide
+                                <button
+                                    className="button vote"
+                                    onClick={() => toggleModal(comment.id, comment.creator)}
+                                >Hide
                                 </button>
                             </div>
                             <PieChart word={comment}/>
                         </div>
+
+                        <HideOptionsModal
+                          isOpen={isModalOpen}
+                          onClose={() => setIsModalOpen(false)}
+                          onOptionSelect={handleOptionSelect}
+                          selectedCommentId={selectedCommentId}
+                          selectedCreatorId={selectedCreatorId}
+                        />
+
                     </div>
                 );
             })}
