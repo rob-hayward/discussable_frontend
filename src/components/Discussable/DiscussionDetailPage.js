@@ -93,15 +93,25 @@ const DiscussionDetailPage = () => {
 
   };
 
-    const handleOptionSelect = async (action, id) => {
+   const handleOptionSelect = async (action, id) => {
   console.log(`Action selected: ${action}, ID: ${id}`);
 
   if (action === 'hideComment') {
-    await updateVisibilityPreference('comment', id, 'hide');
+    // Hides a single comment
+    try {
+      await updateVisibilityPreference('comment', id, 'hide');
+      console.log('Comment hidden successfully');
+    } catch (error) {
+      console.error(`Error hiding comment:`, error);
+    }
   } else if (action === 'hideAllFromUser') {
-    // Assuming a separate function or API call to handle blocking a user
-    console.log(`Blocking all content from user ID: ${id}`);
-    // Implement blocking logic or API call here
+    // Hides all comments from a specific user
+    try {
+      const response = await axiosInstance.post(`/hide-all-from-user/${id}/`);
+      console.log(response.data.message); // Assuming the backend sends back a success message
+    } catch (error) {
+      console.error(`Error hiding all comments from user:`, error);
+    }
   }
 
   // Re-fetch data to reflect changes
