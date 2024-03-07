@@ -1,0 +1,29 @@
+/* src/components/Discussable/ShowOptionsModal.css */
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5); /* Dim the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+.modal-content {
+  background-color: var(--color-background); /* Use your defined CSS variable for background color */
+  color: var(--color-text); /* Use your defined CSS variable for text color */
+  border-radius: var(--border-radius-10); /* Use your defined CSS variable for border radius */
+  padding: 60px;
+  width: 80%; /* Modal width as a percentage of screen width */
+  max-width: 400px; /* Maximum width of the modal */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  border: var(--border-solid-e0); /* Use your defined CSS variable for border */
+}
+
+.modal-content button {
+  margin-bottom: 10px; /* Space between buttons */
+}

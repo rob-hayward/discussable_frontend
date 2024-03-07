@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import PieChart from '../Visualization/PieChart';
 import './DiscussionDetailPage.css';
 import HideOptionsModal from './HideOptionsModal';
+import ShowOptionsModal from "./ShowOptionsModal";
 
 
 const DiscussionDetailPage = () => {
@@ -13,9 +14,22 @@ const DiscussionDetailPage = () => {
     const [comments, setComments] = useState([]);
     const [newCommentContent, setNewCommentContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
     const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [selectedCreatorId, setSelectedCreatorId] = useState(null);
+    const [isHideModalOpen, setIsHideModalOpen] = useState(false);
+    const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+
+    const toggleHideModal = (commentId = null, creatorId = null) => {
+        setSelectedCommentId(commentId);
+        setSelectedCreatorId(creatorId);
+        setIsHideModalOpen(true);
+    };
+
+    const toggleShowModal = (commentId = null, creatorId = null) => {
+        setSelectedCommentId(commentId);
+        setSelectedCreatorId(creatorId);
+        setIsShowModalOpen(true);
+    };
 
     const fetchDiscussion = useCallback(async () => {
         try {
@@ -35,7 +49,7 @@ const DiscussionDetailPage = () => {
     const updateVisibilityPreference = async (votableType, votableId, preference) => {
         try {
             await axiosInstance.post(`/preferences/${votableType}/${votableId}/${preference}/`);
-            fetchDiscussion();  // Re-fetch to reflect the updated preferences
+            fetchDiscussion();
         } catch (error) {
             console.error(`Error updating visibility preference:`, error);
         }
@@ -85,38 +99,36 @@ const DiscussionDetailPage = () => {
       }
   };
 
-    const toggleModal = (commentId = null, creatorId = null) => {
-  console.log(`Toggling modal for commentId: ${commentId}, creatorId: ${creatorId}`); // Add this line for debugging
-  setSelectedCommentId(commentId);
-  setSelectedCreatorId(creatorId);
-  setIsModalOpen(!isModalOpen);
-
-  };
 
    const handleOptionSelect = async (action, id) => {
   console.log(`Action selected: ${action}, ID: ${id}`);
 
   if (action === 'hideComment') {
-    // Hides a single comment
-    try {
-      await updateVisibilityPreference('comment', id, 'hide');
-      console.log('Comment hidden successfully');
-    } catch (error) {
-      console.error(`Error hiding comment:`, error);
-    }
+    await updateVisibilityPreference('comment', id, 'hide');
+  } else if (action === 'showComment') {
+    // Shows a single comment
+    await updateVisibilityPreference('comment', id, 'show');
   } else if (action === 'hideAllFromUser') {
     // Hides all comments from a specific user
-    try {
+     try {
       const response = await axiosInstance.post(`/hide-all-from-user/${id}/`);
       console.log(response.data.message); // Assuming the backend sends back a success message
     } catch (error) {
       console.error(`Error hiding all comments from user:`, error);
     }
+  } else if (action === 'showAllFromUser') {
+    try {
+      const response = await axiosInstance.post(`/show-all-from-user/${id}/`);
+      console.log(response.data.message); // Assuming the backend sends back a success message
+    } catch (error) {
+      console.error(`Error showing all comments from user:`, error);
+    }
   }
 
   // Re-fetch data to reflect changes
   fetchDiscussion();
-  setIsModalOpen(false); // Close the modal
+  setIsHideModalOpen(false); // Close the modal
+  setIsShowModalOpen(false);
 };
 
 
@@ -166,7 +178,7 @@ const DiscussionDetailPage = () => {
                                 This comment
                                 is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
                                 <button className="button vote"
-                                        onClick={() => updateVisibilityPreference('comment', comment.id, 'show')}>Show</button>
+                                        onClick={() => toggleShowModal(comment.id, comment.creator)}>Show</button>
                             </div>
                         ) : (
                             <div className="comment-content">
@@ -182,18 +194,24 @@ const DiscussionDetailPage = () => {
                                 <button className="button vote"
                                         onClick={() => handleVote('comment', comment.id, -1)}>Downvote
                                 </button>
-                                <button
-                                    className="button vote"
-                                    onClick={() => toggleModal(comment.id, comment.creator)}
-                                >Hide
+                                <button className="button vote"
+                                        onClick={() => toggleHideModal(comment.id, comment.creator)}>Hide
                                 </button>
                             </div>
                             <PieChart word={comment}/>
                         </div>
 
                         <HideOptionsModal
-                          isOpen={isModalOpen}
-                          onClose={() => setIsModalOpen(false)}
+                          isOpen={isHideModalOpen}
+                          onClose={() => setIsHideModalOpen(false)}
+                          onOptionSelect={handleOptionSelect}
+                          selectedCommentId={selectedCommentId}
+                          selectedCreatorId={selectedCreatorId}
+                        />
+
+                        <ShowOptionsModal
+                          isOpen={isShowModalOpen}
+                          onClose={() => setIsShowModalOpen(false)}
                           onOptionSelect={handleOptionSelect}
                           selectedCommentId={selectedCommentId}
                           selectedCreatorId={selectedCreatorId}
