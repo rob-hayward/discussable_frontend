@@ -12,6 +12,7 @@ const DiscussionDetailPage = () => {
     const navigate = useNavigate();
     const [discussion, setDiscussion] = useState(null);
     const [comments, setComments] = useState([]);
+    const [sort, setSort] = useState('newest');
     const [newCommentContent, setNewCommentContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [selectedCommentId, setSelectedCommentId] = useState(null);
@@ -33,18 +34,24 @@ const DiscussionDetailPage = () => {
 
     const fetchDiscussion = useCallback(async () => {
         try {
-            const response = await axiosInstance.get(`/discussions/${discussionId}/`);
+            const response = await axiosInstance.get(`/discussions/${discussionId}/?sort=${sort}`);
             setDiscussion(response.data.discussion);
             setComments(response.data.comments);
         } catch (error) {
             console.error("Error fetching discussion details:", error);
             setErrorMessage('Error fetching discussion details.');
         }
-    }, [discussionId]);
+    }, [discussionId, sort]);
 
     useEffect(() => {
         fetchDiscussion();
     }, [fetchDiscussion]);
+
+     // Add a function to handle sort option change
+    const handleSortChange = (e) => {
+        setSort(e.target.value);
+        fetchDiscussion(); // Optionally pass sort parameter if your API requires it
+    };
 
     const updateVisibilityPreference = async (votableType, votableId, preference) => {
         try {
@@ -101,43 +108,49 @@ const DiscussionDetailPage = () => {
 
 
    const handleOptionSelect = async (action, id) => {
-  console.log(`Action selected: ${action}, ID: ${id}`);
+      console.log(`Action selected: ${action}, ID: ${id}`);
 
-  if (action === 'hideComment') {
-    await updateVisibilityPreference('comment', id, 'hide');
-  } else if (action === 'showComment') {
-    // Shows a single comment
-    await updateVisibilityPreference('comment', id, 'show');
-  } else if (action === 'hideAllFromUser') {
-    // Hides all comments from a specific user
-     try {
-      const response = await axiosInstance.post(`/hide-all-from-user/${id}/`);
-      console.log(response.data.message); // Assuming the backend sends back a success message
-    } catch (error) {
-      console.error(`Error hiding all comments from user:`, error);
-    }
-  } else if (action === 'showAllFromUser') {
-    try {
-      const response = await axiosInstance.post(`/show-all-from-user/${id}/`);
-      console.log(response.data.message); // Assuming the backend sends back a success message
-    } catch (error) {
-      console.error(`Error showing all comments from user:`, error);
-    }
-  }
+      if (action === 'hideComment') {
+        await updateVisibilityPreference('comment', id, 'hide');
+      } else if (action === 'showComment') {
+        // Shows a single comment
+        await updateVisibilityPreference('comment', id, 'show');
+      } else if (action === 'hideAllFromUser') {
+        // Hides all comments from a specific user
+         try {
+          const response = await axiosInstance.post(`/hide-all-from-user/${id}/`);
+          console.log(response.data.message); // Assuming the backend sends back a success message
+        } catch (error) {
+          console.error(`Error hiding all comments from user:`, error);
+        }
+      } else if (action === 'showAllFromUser') {
+        try {
+          const response = await axiosInstance.post(`/show-all-from-user/${id}/`);
+          console.log(response.data.message); // Assuming the backend sends back a success message
+        } catch (error) {
+          console.error(`Error showing all comments from user:`, error);
+        }
+      }
 
-  // Re-fetch data to reflect changes
-  fetchDiscussion();
-  setIsHideModalOpen(false); // Close the modal
-  setIsShowModalOpen(false);
-};
-
-
-
-
+      // Re-fetch data to reflect changes
+      fetchDiscussion();
+      setIsHideModalOpen(false); // Close the modal
+      setIsShowModalOpen(false);
+    };
 
     return (
         <div>
             <h2 className="page-title">Discussion Detail Page</h2>
+             {/* Add sort dropdown before discussion details or comments list */}
+            <div>
+                <label htmlFor="commentSort">Sort comments by: </label>
+                <select id="commentSort" value={sort} onChange={handleSortChange}>
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="total_votes">Total Votes</option>
+                </select>
+            </div>
             <div className="discussion-detail-container">
                 {discussion && (
                     <div className="discussion-content">

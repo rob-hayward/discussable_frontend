@@ -8,10 +8,11 @@ import './DiscussionsListPage.css';
 
 const DiscussionsListPage = () => {
     const [discussions, setDiscussions] = useState([]);
+    const [sort, setSort] = useState('newest');
 
-    // Fetch discussions
-    const fetchDiscussions = () => {
-        axiosInstance.get('/discussions/')
+    // Fetch discussions with selected sorting
+    const fetchDiscussions = (sortOption = 'newest') => {
+        axiosInstance.get(`/discussions/?sort=${sortOption}`)
             .then(response => {
                 setDiscussions(response.data);
             })
@@ -21,8 +22,13 @@ const DiscussionsListPage = () => {
     };
 
     useEffect(() => {
-        fetchDiscussions();
-    }, []);
+        fetchDiscussions(sort);
+    }, [sort]);
+
+    const handleSortChange = (e) => {
+        setSort(e.target.value);
+        fetchDiscussions(e.target.value);
+    };
 
     // Function to update the visibility preference of a discussion
     const updateVisibilityPreference = async (discussionId, preference) => {
@@ -37,17 +43,29 @@ const DiscussionsListPage = () => {
     return (
         <div className="discussions-list-container">
             <h2>Existing Discussions</h2>
+            <div className="sort-selector">
+                <label htmlFor="sort">Sort by:</label>
+                <select id="sort" onChange={handleSortChange} value={sort}>
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="popularity">Most Popular</option>
+                    <option value="total_votes">Total Votes</option>
+                </select>
+            </div>
             {discussions.map((discussion) => {
                 const isHiddenByUser = discussion.user_preference === 'hide';
                 const isHiddenByCommunity = discussion.visibility_status === 'hidden' && discussion.user_preference !== 'show';
 
                 return (
-                    <div key={discussion.id} className={`discussion ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
+                    <div key={discussion.id}
+                         className={`discussion ${isHiddenByCommunity || isHiddenByUser ? 'hidden' : ''}`}>
                         <div className="discussion-content">
                             {(isHiddenByCommunity || isHiddenByUser) ? (
                                 <div className="hidden-content">
-                                    This discussion is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
-                                    <button className="button" onClick={() => updateVisibilityPreference(discussion.id, 'show')}>Show</button>
+                                    This discussion
+                                    is {isHiddenByCommunity ? 'hidden based on community votes' : 'hidden by you'}.
+                                    <button className="button"
+                                            onClick={() => updateVisibilityPreference(discussion.id, 'show')}>Show</button>
                                 </div>
                             ) : (
                                 <>
@@ -56,15 +74,13 @@ const DiscussionsListPage = () => {
                                         <h3>Subject: {discussion.subject}</h3>
                                     </Link>
                                     <p>By: {discussion.creator_name}</p>
-                                    {/*<p>Total Votes: {discussion.total_votes}</p>*/}
-                                    {/*<p>Positive Votes: {discussion.positive_votes}</p>*/}
-                                    {/*<p>Negative Votes: {discussion.negative_votes}</p>*/}
-                                    <button className="button" onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide
+                                    <button className="button"
+                                            onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide
                                     </button>
                                 </>
                             )}
                         </div>
-                        <PieChart word={discussion} />
+                        <PieChart word={discussion}/>
                     </div>
                 );
             })}
