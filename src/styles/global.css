@@ -63,12 +63,20 @@ a {
 
 @media (max-width: 768px) {
   .button {
-    padding: 4px 8px; /* Slightly smaller padding on smaller screens */
-    font-size: 0.9rem; /* Adjusting font size for readability */
-    min-width: 100px; /* Slightly smaller minimum width on smaller screens */
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    min-width: 100px;
   }
 }
 
 .error-text {
   color: var(--color-error);
+}
+
+.button-spacing {
+    margin-right: 10px;
+}
+
+.button-spacing:last-child {
+    margin-right: 0;
 }

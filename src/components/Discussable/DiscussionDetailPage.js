@@ -50,7 +50,7 @@ const DiscussionDetailPage = () => {
      // Add a function to handle sort option change
     const handleSortChange = (e) => {
         setSort(e.target.value);
-        fetchDiscussion(); // Optionally pass sort parameter if your API requires it
+        fetchDiscussion();
     };
 
     const updateVisibilityPreference = async (votableType, votableId, preference) => {
@@ -100,7 +100,7 @@ const DiscussionDetailPage = () => {
     const handleHideDiscussion = async () => {
       try {
           await updateVisibilityPreference('discussion', discussionId, 'hide');
-          navigate('/discussions'); // Adjust the path as necessary for your route setup
+          navigate('/discussions');
       } catch (error) {
           console.error("Error hiding discussion:", error);
       }
@@ -141,16 +141,7 @@ const DiscussionDetailPage = () => {
     return (
         <div>
             <h2 className="page-title">Discussion Detail Page</h2>
-             {/* Add sort dropdown before discussion details or comments list */}
-            <div>
-                <label htmlFor="commentSort">Sort comments by: </label>
-                <select id="commentSort" value={sort} onChange={handleSortChange}>
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="popular">Most Popular</option>
-                    <option value="total_votes">Total Votes</option>
-                </select>
-            </div>
+            {/* Add sort dropdown before discussion details or comments list */}
             <div className="discussion-detail-container">
                 {discussion && (
                     <div className="discussion-content">
@@ -173,10 +164,19 @@ const DiscussionDetailPage = () => {
                             <button className="button vote" onClick={handleHideDiscussion}>Hide</button>
                         </div>
                         <div className="pie-chart-container">
-                        <PieChart word={discussion}/>
+                            <PieChart word={discussion}/>
                         </div>
                     </div>
                 )}
+                <div className="sort-selector">
+                    <label htmlFor="commentSort">Sort comments by: </label>
+                    <select id="commentSort" value={sort} onChange={handleSortChange}>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="total_votes">Total Votes</option>
+                    </select>
+                </div>
             </div>
 
             {comments.length > 0 && comments.map((comment) => {
@@ -215,19 +215,19 @@ const DiscussionDetailPage = () => {
                         </div>
 
                         <HideOptionsModal
-                          isOpen={isHideModalOpen}
-                          onClose={() => setIsHideModalOpen(false)}
-                          onOptionSelect={handleOptionSelect}
-                          selectedCommentId={selectedCommentId}
-                          selectedCreatorId={selectedCreatorId}
+                            isOpen={isHideModalOpen}
+                            onClose={() => setIsHideModalOpen(false)}
+                            onOptionSelect={handleOptionSelect}
+                            selectedCommentId={selectedCommentId}
+                            selectedCreatorId={selectedCreatorId}
                         />
 
                         <ShowOptionsModal
-                          isOpen={isShowModalOpen}
-                          onClose={() => setIsShowModalOpen(false)}
-                          onOptionSelect={handleOptionSelect}
-                          selectedCommentId={selectedCommentId}
-                          selectedCreatorId={selectedCreatorId}
+                            isOpen={isShowModalOpen}
+                            onClose={() => setIsShowModalOpen(false)}
+                            onOptionSelect={handleOptionSelect}
+                            selectedCommentId={selectedCommentId}
+                            selectedCreatorId={selectedCreatorId}
                         />
 
                     </div>

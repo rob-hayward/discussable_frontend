@@ -42,9 +42,9 @@ const DiscussionsListPage = () => {
 
     return (
         <div className="discussions-list-container">
-            <h2>Existing Discussions</h2>
+            <h2 className="page-title">Discussion List Page</h2>
             <div className="sort-selector">
-                <label htmlFor="sort">Sort by:</label>
+                <label htmlFor="sort">Sort discussions by:</label>
                 <select id="sort" onChange={handleSortChange} value={sort}>
                     <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
@@ -74,7 +74,8 @@ const DiscussionsListPage = () => {
                                         <h3>Subject: {discussion.subject}</h3>
                                     </Link>
                                     <p>By: {discussion.creator_name}</p>
-                                    <button className="button"
+                                    <Link to={`/discussions/${discussion.id}`} className="button button-spacing" style={{ minWidth: '120px', display: 'inline-block', textAlign: 'center' }}>Discuss</Link>
+                                    <button className="button button-spacing"
                                             onClick={() => updateVisibilityPreference(discussion.id, 'hide')}>Hide
                                     </button>
                                 </>
